@@ -66,7 +66,7 @@
                         <select id="temporada" class="w-full px-3 py-2 border rounded-lg bg-white font-bold text-sm" onchange="calcular()">
                             <option value="Média">Média (Fev a Nov - Exceto Feriados)</option>
                             <option value="Alta">Alta (2ª Quinz. Jan, Dez, Feriados)</option>
-                            <option value="Super Alta">Super Alta (1ª Quinz. Jan, Julho, Grandes Feriados)</option>
+                            <option value="Super Alta">Super Alta (Feriados Principais/Julho)</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mb-4 pt-2 border-t text-center">
@@ -191,7 +191,7 @@
                 <div class="w-full max-w-sm mt-6 grid grid-cols-3 gap-2">
                     <button onclick="gerarPDF()" class="bg-red-600 text-white font-bold py-4 rounded-2xl shadow-lg text-[10px] hover:bg-red-700 uppercase flex flex-col items-center"><i class="fas fa-file-pdf text-lg"></i>Gerar PDF</button>
                     <button onclick="baixarImagem()" class="bg-slate-800 text-white font-bold py-4 rounded-2xl shadow-lg text-[10px] hover:bg-black uppercase flex flex-col items-center"><i class="fas fa-image text-lg"></i>Gerar Imagem</button>
-                    <button onclick="enviarWhatsApp()" class="bg-green-500 text-white font-bold py-4 rounded-2xl shadow-lg text-[10px] hover:bg-green-600 uppercase flex flex-col items-center"><i class="fab fa-whatsapp text-lg"></i>Enviar WhatsApp</button>
+                    <button onclick="enviarWhatsApp()" class="bg-green-500 text-white font-bold py-4 rounded-2xl shadow-lg text-[10px] hover:bg-green-600 uppercase flex flex-col items-center"><i class="fab fa-whatsapp text-lg"></i>WhatsApp</button>
                 </div>
 
                 <div class="w-full max-w-sm mt-6 space-y-4">
@@ -211,14 +211,33 @@
     <script>
         const CUSTO_PONTO = 77000 / 300000;
         const CUSTO_AI_DIA_AD = 272.00;
+        
         const DB_HOTEIS = {
-            "Wish Natal": { t: {2:2380, 3:2534, 4:2681}, p: { "Média": {2:6000, 3:10000, 4:10000}, "Alta": {2:8000, 3:12000, 4:12000}, "Super Alta": {2:10000, 3:15000, 4:15000} }, img: "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=800" },
-            "Wish Serrano": { t: {2:2380, 3:2534, 4:2681}, p: { "Média": {2:6000, 3:10000, 4:10000}, "Alta": {2:9000, 3:13000, 4:13000}, "Super Alta": {2:12000, 3:16000, 4:16000} }, img: "https://images.unsplash.com/photo-1517400508447-f8dd518b86db?q=80&w=800" },
-            "Wish Foz do Iguaçu": { t: {2:2380, 3:2534, 4:2681}, p: { "Média": {2:5000, 3:8000, 4:8000}, "Alta": {2:7500, 3:10000, 4:10000}, "Super Alta": {2:10000, 3:14000, 4:14000} }, img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=800" },
-            "Wish Hotel da Bahia": { t: {2:1800, 3:1950, 4:2100}, p: { "Média": {2:5000, 3:8000, 4:8000}, "Alta": {2:7000, 3:10000, 4:10000}, "Super Alta": {2:9000, 3:12000, 4:12000} }, img: "https://images.unsplash.com/photo-1551882547-ff40c0d12c56?q=80&w=800" },
-            "Marupiara Resort": { t: {2:1610, 3:1715, 4:1813}, p: { "Média": {2:5000, 3:9000, 4:9000}, "Alta": {2:7000, 3:11000, 4:11000}, "Super Alta": {2:9000, 3:13000, 4:13000} }, img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800" },
-            "Prodigy Gramado": { t: {2:1500, 3:1605, 4:1700}, p: { "Média": {2:4000, 3:6000, 4:6000}, "Alta": {2:6000, 3:8000, 4:8000}, "Super Alta": {2:8000, 3:11000, 4:11000} }, img: "https://images.unsplash.com/photo-1542314831-c6a4d140b3cb?q=80&w=800" },
-            "Prodigy Santos Dumont": { t: {2:1500, 3:1605, 4:1700}, p: { "Média": {2:4000, 3:6000, 4:6000}, "Alta": {2:6000, 3:8000, 4:8000}, "Super Alta": {2:8000, 3:11000, 4:11000} }, img: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?q=80&w=800" }
+            "Wish Natal": { cat: "WISH", img: "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=800" },
+            "Wish Serrano": { cat: "WISH", img: "https://images.unsplash.com/photo-1517400508447-f8dd518b86db?q=80&w=800" },
+            "Wish Foz do Iguaçu": { cat: "WISH", img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=800" },
+            "Wish Hotel da Bahia": { cat: "WISH", img: "https://images.unsplash.com/photo-1551882547-ff40c0d12c56?q=80&w=800" },
+            "Marupiara Resort": { cat: "PRODIGY", img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800" },
+            "Prodigy Gramado": { cat: "PRODIGY", img: "https://images.unsplash.com/photo-1542314831-c6a4d140b3cb?q=80&w=800" },
+            "Prodigy Santos Dumont": { cat: "PRODIGY", img: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?q=80&w=800" }
+        };
+
+        const TABELA_PONTOS = {
+            "WISH": {
+                "Média": { 2: 6000, 3: 10000, 4: 14000 },
+                "Alta": { 2: 15000, 3: 22500, 4: 30000 },
+                "Super Alta": { 2: 20000, 3: 30000, 4: 40000 } // Super Alta estimada (+33% sobre Alta)
+            },
+            "PRODIGY": {
+                "Média": { 2: 5000, 3: 9000, 4: 10000 },
+                "Alta": { 2: 12000, 3: 17000, 4: 26000 },
+                "Super Alta": { 2: 16000, 3: 23000, 4: 35000 } // Super Alta estimada
+            }
+        };
+
+        const TABELA_MANUTENCAO = {
+            "WISH": { 2: 2380, 3: 2534, 4: 2681 },
+            "PRODIGY": { 2: 1610, 3: 1715, 4: 1813 }
         };
 
         const el = (id) => document.getElementById(id);
@@ -285,9 +304,9 @@
             const paxPorQuarto = Math.ceil(paxTotal / qtosFinal);
             const ocup = Math.min(Math.max(paxPorQuarto, 2), 4);
             
-            const hotelData = DB_HOTEIS[hName];
-            const tUnit = hotelData.t[ocup];
-            const pUnit = hotelData.p[temp][ocup];
+            const hotelMeta = DB_HOTEIS[hName];
+            const tUnit = TABELA_MANUTENCAO[hotelMeta.cat][ocup];
+            const pUnit = TABELA_PONTOS[hotelMeta.cat][temp][ocup];
             
             el('taxaManutencao').value = tUnit;
             el('taxaManutencaoDisplay').value = fmt(tUnit);
@@ -342,10 +361,9 @@
                     </div>
                     <hr class="opacity-10">
                     <div>
-                        <p class="text-blue-400 font-black uppercase text-[9px] tracking-widest mb-1">🏨 Custos de Hospedagem</p>
+                        <p class="text-blue-400 font-black uppercase text-[9px] tracking-widest mb-1">🏨 Custos de Hospedagem (${hotelMeta.cat})</p>
                         <p>Taxa Manut. Unitária: ${fmt(tUnit)}</p>
-                        <p>Manutenção Total (${qtosFinal} qto): ${fmt(tTotal)}</p>
-                        <p>Pontos Unitários: ${pUnit.toLocaleString()} pts</p>
+                        <p>Manutenção Total: ${fmt(tTotal)}</p>
                         <p>Pontos Total (${qtosFinal} qto): ${pTotal.toLocaleString()} pts</p>
                         <p>Valor ref. Pontos (Custo): ${fmt(cPtsFin)}</p>
                     </div>
@@ -356,13 +374,6 @@
                         <p>Custo por Adulto/Dia: ${fmt(CUSTO_AI_DIA_AD)}</p>
                         <p>Custo Total AI Sócio: ${fmt(cAIFin)}</p>
                     </div>` : ''}
-                    <hr class="opacity-10">
-                    <div>
-                        <p class="text-blue-400 font-black uppercase text-[9px] tracking-widest mb-1">💰 Fechamento da Operação</p>
-                        <p>Custo Operacional Total: ${fmt(cOperacional)}</p>
-                        <p>Valor de Venda Gerado: ${fmt(vVenda)}</p>
-                        <p>Margem Líquida Real: ${fmt(lucroReal)}</p>
-                    </div>
                 </div>`;
 
             el('cardMercadoCard').innerText = fmt(vRef);
@@ -401,16 +412,16 @@
                 querAI: el('clienteQuerAI').checked,
                 temAI: el('hotelTemAI').checked
             };
-            let banco = JSON.parse(localStorage.getItem('wish_storage_v2') || '[]');
+            let banco = JSON.parse(localStorage.getItem('wish_storage_v3') || '[]');
             banco.push(dados);
-            localStorage.setItem('wish_storage_v2', JSON.stringify(banco));
+            localStorage.setItem('wish_storage_v3', JSON.stringify(banco));
             renderLista();
             el('nomeCliente').value = "";
             alert("Salvo com sucesso!");
         }
 
         function renderLista() {
-            const banco = JSON.parse(localStorage.getItem('wish_storage_v2') || '[]');
+            const banco = JSON.parse(localStorage.getItem('wish_storage_v3') || '[]');
             const container = el('listaPropostas');
             if (banco.length === 0) { container.innerHTML = '<p class="text-xs text-slate-500 italic text-center py-4">Lista vazia.</p>'; return; }
             container.innerHTML = banco.reverse().map(p => `
@@ -425,7 +436,7 @@
         }
 
         function carregarProposta(id) {
-            const banco = JSON.parse(localStorage.getItem('wish_storage_v2') || '[]');
+            const banco = JSON.parse(localStorage.getItem('wish_storage_v3') || '[]');
             const p = banco.find(x => x.id === id);
             if (!p) return;
             el('nomeCliente').value = p.nome;
@@ -451,9 +462,9 @@
         }
 
         function deletarProposta(id) {
-            let banco = JSON.parse(localStorage.getItem('wish_storage_v2') || '[]');
+            let banco = JSON.parse(localStorage.getItem('wish_storage_v3') || '[]');
             banco = banco.filter(x => x.id !== id);
-            localStorage.setItem('wish_storage_v2', JSON.stringify(banco));
+            localStorage.setItem('wish_storage_v3', JSON.stringify(banco));
             renderLista();
         }
 
