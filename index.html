@@ -10,118 +10,100 @@
         #sliderAjuste { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px; background: #e5e7eb; outline: none; }
         #sliderAjuste::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #2563eb; cursor: pointer; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
         .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); }
-        .money-input { font-family: monospace; text-align: right; }
     </style>
 </head>
-<body class="bg-gray-100 p-4 md:p-8 font-sans">
-    <div class="max-w-7xl mx-auto bg-white p-6 md:p-8 rounded-lg shadow-lg border border-gray-200">
-        <h1 class="text-3xl font-bold mb-8 text-center text-blue-800 tracking-tighter uppercase font-black italic">Simulador de Locação</h1>
+<body class="bg-gray-100 p-4 md:p-6 font-sans text-slate-900">
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="space-y-6 lg:col-span-1">
-                <section class="p-4 border rounded-lg shadow-sm bg-white">
-                    <h2 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800 tracking-tighter uppercase text-xs">1. Dados da Reserva</h2>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-xs font-bold mb-1 uppercase">Hotel</label>
-                        <select id="hotel" class="w-full px-3 py-2 border rounded-lg bg-white font-bold text-sm" onchange="sync()">
-                            <option value="Wish Natal">Wish Natal (RN)</option>
-                            <option value="Wish Serrano">Wish Serrano (RS)</option>
-                            <option value="Wish Foz do Iguaçu">Wish Foz do Iguaçu (PR)</option>
-                            <option value="Wish Hotel da Bahia">Wish Hotel da Bahia (BA)</option>
-                            <option value="Marupiara Resort">Marupiara Resort (PE)</option>
-                            <option value="Prodigy Gramado">Prodigy Gramado (RS)</option>
-                            <option value="Prodigy Santos Dumont">Prodigy Santos Dumont (RJ)</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-4 pt-2 border-t">
-                        <div>
-                            <label class="block text-gray-700 text-[10px] font-bold uppercase">Entrada</label>
-                            <input type="date" id="checkin" class="w-full px-2 py-1 border rounded text-xs font-bold" onchange="atualizarCheckout()">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 text-[10px] font-bold uppercase">Saída</label>
-                            <input type="date" id="checkout" class="w-full px-2 py-1 border rounded text-xs bg-gray-50 font-bold" readonly>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-4 gap-2 mb-4 bg-gray-50 p-2 rounded border border-gray-200 text-center">
-                        <div><label class="block text-gray-700 text-[9px] font-bold uppercase">Drs.</label><input type="number" id="diarias" value="7" class="w-full p-1 border rounded font-black text-blue-700 text-center text-sm" onchange="atualizarCheckout()"></div>
-                        <div><label class="block text-gray-700 text-[9px] font-bold uppercase">Qtos.</label><input type="number" id="quartos" value="1" class="w-full p-1 border rounded text-center text-sm font-bold"></div>
-                        <div><label class="block text-gray-700 text-[9px] font-bold uppercase">Ad.</label><input type="number" id="adultos" value="2" class="w-full p-1 border rounded text-center text-sm font-bold"></div>
-                        <div><label class="block text-gray-700 text-[9px] font-bold uppercase">Cr.</label><input type="number" id="criancas" value="0" class="w-full p-1 border rounded text-center text-sm font-bold"></div>
-                    </div>
-                </section>
+        <div class="space-y-6">
+            <section class="p-4 border rounded-lg shadow-sm bg-white">
+                <h2 class="font-bold mb-4 border-b pb-2 uppercase text-xs">1. Dados da Reserva</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-xs font-bold mb-1 uppercase">Hotel</label>
+                    <select id="hotel" class="w-full px-3 py-2 border rounded-lg bg-white font-bold text-sm" onchange="sync()">
+                        <option value="Wish Natal">Wish Natal (RN)</option>
+                        <option value="Wish Serrano">Wish Serrano (RS)</option>
+                        <option value="Wish Foz do Iguaçu">Wish Foz do Iguaçu (PR)</option>
+                        <option value="Wish Hotel da Bahia">Wish Hotel da Bahia (BA)</option>
+                        <option value="Marupiara Resort">Marupiara Resort (PE)</option>
+                        <option value="Prodigy Gramado">Prodigy Gramado (RS)</option>
+                        <option value="Prodigy Santos Dumont">Prodigy Santos Dumont (RJ)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div><label class="block text-[10px] font-bold uppercase">Quartos</label><input type="number" id="qtos" value="1" class="w-full border rounded text-center text-sm font-bold p-1"></div>
+                    <div><label class="block text-[10px] font-bold uppercase">Adultos</label><input type="number" id="ads" value="2" class="w-full border rounded text-center text-sm font-bold p-1"></div>
+                </div>
+            </section>
 
-                <section class="p-4 bg-blue-50 border border-blue-100 rounded-lg shadow-sm">
-                    <h2 class="text-lg font-bold mb-3 text-blue-800 tracking-tighter uppercase text-xs">2. Preço de Mercado (Site)</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-blue-900 text-[10px] font-black uppercase mb-1">Total Site (Hospedagem + Café)</label>
-                            <input type="text" id="vCafeDisplay" value="R$ 10.000,00" class="w-full px-3 py-2 border border-blue-200 rounded font-bold text-sm money-input" onkeyup="formatarMoedaInput(this)">
-                            <input type="hidden" id="vCafe" value="10000.00">
-                        </div>
-                        <div class="flex items-center space-x-3 cursor-pointer">
-                            <input type="checkbox" id="temAI" onchange="toggleAI()">
-                            <span class="text-gray-800 font-bold text-xs uppercase tracking-tighter">Este hotel possui opção All Inclusive?</span>
-                        </div>
-                        <div id="boxVSiteAI" style="display:none;">
-                            <label class="block text-blue-900 text-[10px] font-black uppercase mb-1">Total Site COM All Inclusive</label>
-                            <input type="text" id="vAIDisplay" value="R$ 12.000,00" class="w-full px-3 py-2 border border-blue-200 rounded font-bold text-sm money-input" onkeyup="formatarMoedaInput(this)">
-                            <input type="hidden" id="vAI" value="12000.00">
-                        </div>
-                    </div>
-                </section>
-
-                <section class="p-4 border rounded-lg shadow-sm bg-white">
-                    <h2 class="text-lg font-bold mb-3 text-gray-800 tracking-tighter uppercase text-xs">3. Ajuste de Venda</h2>
-                    <div id="boxVenderAI" class="mb-4 bg-yellow-50 p-2 rounded border border-yellow-200" style="display:none;">
-                        <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" id="venderAI"><span class="text-gray-800 font-bold text-xs uppercase">Incluir All Inclusive na Oferta?</span></label>
-                    </div>
-                    <div class="flex justify-between items-center mb-1"><label class="text-gray-700 text-xs font-bold uppercase tracking-tighter">Margem Desconto:</label><span id="valSlider" class="text-blue-600 font-black text-lg">30%</span></div>
-                    <input type="range" id="sliderAjuste" min="0" max="60" value="30">
-                </section>
-            </div>
-
-            <div class="lg:col-span-1 space-y-6">
-                <div class="bg-slate-800 p-6 rounded-[20px] text-white shadow-xl flex flex-col justify-between h-full border border-slate-700">
+            <section class="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                <h2 class="font-bold mb-3 text-blue-800 uppercase text-xs">2. Preço de Mercado (Site)</h2>
+                <div class="space-y-4">
                     <div>
-                        <h2 class="text-xl font-black mb-4 border-b border-slate-600 pb-2 text-blue-300 uppercase italic">Análise Financeira</h2>
-                        <div class="bg-slate-700/50 p-4 rounded-2xl border border-slate-600 space-y-2 mb-6">
-                            <div class="flex justify-between text-xs font-bold opacity-60"><span>Site Ref.:</span><span id="resRef" class="line-through"></span></div>
-                            <div class="flex justify-between text-xs text-green-400 font-black"><span>Economia Gerada:</span><span id="resEcon"></span></div>
-                            <div class="flex justify-between text-2xl font-black pt-2 border-t border-slate-500 tracking-tighter uppercase"><span>Venda Final:</span><span id="resVenda"></span></div>
-                        </div>
+                        <label class="block text-[10px] font-bold uppercase mb-1">Total Site (Hospedagem + Café) - R$</label>
+                        <input type="number" id="vCafe" value="10000" class="w-full border rounded p-2 font-bold text-sm">
+                        <p class="text-[9px] text-blue-600 italic mt-1">* Deixe 0 se o hotel for Exclusivo All Inclusive no site.</p>
                     </div>
-                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-700 mb-4 shadow-inner text-center">
-                        <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Lucro Real</span>
-                        <div id="resLucro" class="font-black text-2xl text-green-400 tracking-tighter"></div>
-                    </div>
+                    <div class="flex items-center space-x-2"><input type="checkbox" id="temAI" checked><label class="text-[10px] font-bold uppercase">Hotel possui All Inclusive?</label></div>
+                    <div id="boxVAI"><label class="block text-[10px] font-bold uppercase mb-1">Total Site COM All Inclusive - R$</label><input type="number" id="vAI" value="17000" class="w-full border rounded p-2 font-bold text-sm"></div>
                 </div>
-            </div>
+            </section>
 
-            <div class="lg:col-span-1 flex flex-col items-center">
-                <div id="card" class="rounded-[40px] w-full max-w-sm shadow-2xl relative overflow-hidden flex flex-col" style="min-height: 580px; width: 360px;">
-                    <img id="cardImg" src="" class="absolute inset-0 w-full h-full object-cover z-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/10 z-10"></div>
-                    <div class="relative z-20 p-6 h-full flex flex-col justify-end">
-                        <div class="glass-panel rounded-[32px] p-6 text-center border border-white/20">
-                            <div class="absolute top-0 right-0 bg-green-500 text-white font-black text-[13px] px-4 py-2 rounded-bl-2xl shadow-md">
-                                -<span id="cardPercOFF"></span>% OFF
-                            </div>
-                            <p class="text-[9px] text-gray-500 uppercase font-black mt-2 tracking-widest">Preço Normal no Site</p>
-                            <p id="cardSite" class="text-sm line-through text-red-400 font-bold opacity-80"></p>
-                            <div class="bg-green-50/50 py-5 rounded-3xl border-2 border-green-100/50 mb-4 shadow-inner">
-                                <p class="text-[10px] text-green-700 uppercase font-black">Você Economiza:</p>
-                                <p id="cardEcon" class="text-5xl font-black text-green-600 tracking-tighter"></p>
-                            </div>
-                            <p class="text-[9px] text-blue-900 uppercase font-black">Valor Final Comigo:</p>
-                            <p id="cardFinal" class="text-3xl font-black text-slate-900 tracking-tighter"></p>
+            <section class="p-4 border rounded-lg bg-white shadow-sm">
+                <h2 class="font-bold mb-3 uppercase text-xs">3. Ajuste de Venda</h2>
+                <div class="mb-4 p-2 bg-yellow-50 rounded border border-yellow-200"><label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" id="querAI" checked><span class="text-[10px] font-bold uppercase">Incluir All Inclusive na Oferta?</span></label></div>
+                <div class="flex justify-between items-center mb-1">
+                    <label id="labelSlider" class="text-[10px] font-bold uppercase text-blue-800"></label>
+                    <span id="valSlider" class="text-blue-600 font-black text-lg"></span>
+                </div>
+                <input type="range" id="sliderAjuste" min="0" max="60" value="30">
+            </section>
+        </div>
+
+        <div class="bg-slate-800 p-6 rounded-[20px] text-white shadow-xl flex flex-col justify-between h-full border border-slate-700">
+            <div>
+                <h2 class="text-xl font-black mb-4 border-b border-slate-600 pb-2 text-blue-300 uppercase italic">Análise Financeira</h2>
+                <div class="bg-slate-700/50 p-4 rounded-2xl border border-slate-600 space-y-2 mb-6">
+                    <div class="flex justify-between text-xs font-bold opacity-60"><span>Site Ref.:</span><span id="resRef" class="line-through"></span></div>
+                    <div class="flex justify-between text-xs text-green-400 font-black"><span>Economia Real Amigo:</span><span id="resEcon"></span></div>
+                    <div class="flex justify-between text-2xl font-black pt-2 border-t border-slate-500 tracking-tighter uppercase"><span>Venda Final:</span><span id="resVenda"></span></div>
+                </div>
+                <div class="space-y-2 text-[11px] text-slate-300 bg-black/20 p-4 rounded-xl border border-slate-700">
+                    <div class="flex justify-between"><span>Custos (Maint + Pts):</span><span id="resCustoHosp" class="font-bold"></span></div>
+                    <div class="flex justify-between text-yellow-400"><span>Custo Alimentação AI:</span><span id="resCustoAlim" class="font-bold"></span></div>
+                    <div class="flex justify-between text-lg font-bold text-red-400 pt-1 border-t border-slate-700 mt-1 uppercase"><span>Custo Total:</span><span id="resCustoTotal"></span></div>
+                </div>
+            </div>
+            <div class="bg-slate-900/80 p-5 rounded-2xl border-2 border-green-500/30 mt-6 text-center">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1 tracking-widest text-green-400">Seu Lucro Líquido</span>
+                <div id="resLucroReal" class="font-black text-3xl text-white tracking-tighter"></div>
+                <div id="resLucroPerc" class="text-green-400 font-bold text-sm mt-1"></div>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center">
+            <div id="card" class="rounded-[40px] w-[360px] h-[580px] shadow-2xl relative overflow-hidden flex flex-col">
+                <img id="cardImg" src="" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                <div class="relative z-20 p-6 h-full flex flex-col justify-end">
+                    <div class="glass-panel rounded-[32px] p-6 text-center border border-white/20">
+                        <div class="absolute top-0 right-0 bg-green-500 text-white font-black text-xs px-4 py-2 rounded-bl-2xl shadow-md">
+                            -<span id="cardPerc"></span>% OFF
                         </div>
+                        <p class="text-[9px] text-gray-500 uppercase font-black mt-2 tracking-widest">Preço Normal no Site</p>
+                        <p id="cardSite" class="text-sm line-through text-red-400 font-bold opacity-80"></p>
+                        <div class="bg-green-50/50 py-5 rounded-3xl border-2 border-green-100/50 mb-4">
+                            <p class="text-[10px] text-green-700 uppercase font-black">Sua Economia Real:</p>
+                            <p id="cardEcon" class="text-5xl font-black text-green-600 tracking-tighter"></p>
+                        </div>
+                        <p class="text-[9px] text-blue-900 uppercase font-black">Valor Final Comigo:</p>
+                        <p id="cardFinal" class="text-3xl font-black text-slate-900 tracking-tighter"></p>
                     </div>
                 </div>
-                <button onclick="enviarWhats()" class="mt-6 w-full max-w-sm bg-green-500 text-white font-black py-4 rounded-2xl shadow-lg uppercase text-xs flex items-center justify-center space-x-2">
-                    <i class="fab fa-whatsapp text-lg"></i><span>Enviar Proposta WhatsApp</span>
-                </button>
             </div>
+            <button onclick="enviarWhats()" class="mt-6 w-full max-w-[360px] bg-green-500 text-white font-black py-4 rounded-2xl uppercase text-xs shadow-lg flex items-center justify-center space-x-2">
+                <i class="fab fa-whatsapp"></i><span>Enviar Proposta WhatsApp</span>
+            </button>
         </div>
     </div>
 
@@ -129,90 +111,78 @@
         const CUSTO_PONTO = 77000 / 300000;
         const CUSTO_AI_DIA_AD = 272.00;
 
+        const DB_HOTEIS = {
+            "Wish Natal": { t: 2380, p: { "Média": 6000, "Alta": 8000, "Super Alta": 10000 }, img: "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=800" },
+            "Wish Serrano": { t: 2380, p: { "Média": 6000, "Alta": 9000, "Super Alta": 12000 }, img: "https://images.unsplash.com/photo-1517400508447-f8dd518b86db?q=80&w=800" },
+            "Wish Foz do Iguaçu": { t: 2380, p: { "Média": 5000, "Alta": 7500, "Super Alta": 10000 }, img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=800" },
+            "Wish Hotel da Bahia": { t: 1800, p: { "Média": 5000, "Alta": 7000, "Super Alta": 9000 }, img: "https://images.unsplash.com/photo-1551882547-ff40c0d12c56?q=80&w=800" },
+            "Marupiara Resort": { t: 1610, p: { "Média": 5000, "Alta": 7000, "Super Alta": 9000 }, img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800" }
+        };
+
         const el = (id) => document.getElementById(id);
         const fmt = (v) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
 
-        function formatarMoedaInput(input) {
-            let valor = input.value.replace(/\D/g, '');
-            valor = (valor / 100).toFixed(2);
-            const partes = valor.split('.');
-            partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            const idReal = input.id.replace('Display', '');
-            el(idReal).value = valor;
-            input.value = 'R$ ' + partes.join(',');
-            calcular();
-        }
-
-        function atualizarCheckout() {
-            if (el('checkin').value) {
-                const qtd = parseInt(el('diarias').value) || 0;
-                const d = new Date(el('checkin').value + "T00:00:00");
-                d.setDate(d.getDate() + qtd);
-                el('checkout').value = d.toISOString().split('T')[0];
-            }
-            calcular();
-        }
-
-        function toggleAI() {
-            const hasAI = el('temAI').checked;
-            el('boxVSiteAI').style.display = hasAI ? 'block' : 'none';
-            el('boxVenderAI').style.display = hasAI ? 'block' : 'none';
-            calcular();
-        }
-
         function sync() {
+            const hName = el('hotel').value;
+            const hotel = DB_HOTEIS[hName];
+            if(hotel) el('cardImg').src = hotel.img;
             calcular();
         }
 
         function calcular() {
-            const drs = parseInt(el('diarias').value) || 0;
-            const qtos = parseInt(el('quartos').value) || 1;
-            const ads = parseInt(el('adultos').value) || 0;
-            const pDesc = parseInt(el('sliderAjuste').value);
-            const isAI = el('venderAI').checked && el('temAI').checked;
+            const vCafe = parseFloat(el('vCafe').value) || 0;
+            const vAI = parseFloat(el('vAI').value) || 0;
+            const valS = parseInt(el('sliderAjuste').value);
+            const q = parseInt(el('qtos').value) || 1;
+            const a = parseInt(el('ads').value) || 2;
+            const useAI = el('querAI').checked && el('temAI').checked;
 
-            const cTotal = (2380 * qtos) + ((6000 * qtos) * CUSTO_PONTO) + (isAI ? (drs * ads * CUSTO_AI_DIA_AD) : 0);
-            const vSiteCafe = parseFloat(el('vCafe').value) || 0;
-            const vSiteAI = parseFloat(el('vAI').value) || 0;
+            const cHosp = (2380 * q) + ((6000 * q) * CUSTO_PONTO);
+            const cAlim = useAI ? (7 * a * 272) : 0; 
+            const cTotal = cHosp + cAlim;
 
-            let vVendaFinal, vRefSite;
-            if (vSiteCafe === 0 && vSiteAI > 0) {
-                vRefSite = vSiteAI;
-                vVendaFinal = cTotal * (1 + pDesc/100);
-            } else {
-                vRefSite = isAI ? vSiteAI : vSiteCafe;
-                vVendaFinal = (vSiteCafe * (1 - pDesc/100)) + (isAI ? (drs * ads * CUSTO_AI_DIA_AD) : 0);
+            let finalVenda, refSite, label;
+
+            if (vCafe === 0) { 
+                label = "Margem de Lucro:";
+                el('sliderAjuste').max = 100;
+                refSite = vAI;
+                finalVenda = cTotal * (1 + valS/100);
+            } else { 
+                label = "Desconto Hospedagem:";
+                el('sliderAjuste').max = 45; 
+                refSite = useAI ? vAI : vCafe;
+                finalVenda = (vCafe * (1 - valS/100)) + cAlim;
             }
 
-            const econReal = vRefSite - vVendaFinal;
+            const econ = refSite - finalVenda;
+            const lucroReal = finalVenda - cTotal;
 
-            el('valSlider').innerText = pDesc + '%';
-            el('resRef').innerText = fmt(vRefSite);
-            el('resEcon').innerText = fmt(econReal);
-            el('resVenda').innerText = fmt(vVendaFinal);
-            el('resLucro').innerText = fmt(vVendaFinal - cTotal);
+            el('labelSlider').innerText = label;
+            el('valSlider').innerText = valS + '%';
+            el('resRef').innerText = fmt(refSite);
+            el('resEcon').innerText = fmt(econ);
+            el('resVenda').innerText = fmt(finalVenda);
+            el('resCustoHosp').innerText = fmt(cHosp);
+            el('resCustoAlim').innerText = fmt(cAlim);
+            el('resCustoTotal').innerText = fmt(cTotal);
+            el('resLucroReal').innerText = fmt(lucroReal);
+            el('resLucroPerc').innerText = finalVenda > 0 ? ((lucroReal / finalVenda) * 100).toFixed(1) + "% de Margem" : "0%";
 
-            el('cardSite').innerText = fmt(vRefSite);
-            el('cardEcon').innerText = fmt(econReal);
-            el('cardFinal').innerText = fmt(vVendaFinal);
-            el('cardPercOFF').innerText = vRefSite > 0 ? ((econReal / vRefSite) * 100).toFixed(0) : 0;
+            el('cardSite').innerText = fmt(refSite);
+            el('cardEcon').innerText = fmt(econ);
+            el('cardFinal').innerText = fmt(finalVenda);
+            el('cardPerc').innerText = refSite > 0 ? ((econ / refSite) * 100).toFixed(0) : 0;
         }
 
         function enviarWhats() {
             const hotel = el('hotel').value;
-            const drs = el('diarias').value;
-            const ads = el('adultos').value;
-            const crs = el('criancas').value;
-
-            let detalhes = `${drs} dias para ${ads} Adulto${ads > 1 ? 's' : ''}`;
-            if (crs > 0) detalhes += ` e ${crs} Criança${crs > 1 ? 's' : ''}`;
-
-            const msg = `Fiz a simulação para o:\n\n🏨 *Hotel: ${hotel}*\n🔹 *Detalhes:* ${detalhes}.\n📉 *Desconto Aplicado:* -${el('cardPercOFF').innerText}% OFF\n💰 *Valor no Site:* ~${el('cardSite').innerText}~\n✅ *Com meu benefício:* *${el('cardFinal').innerText}*\n\nVocê economiza exatos *${el('cardEcon').innerText}* nessa reserva! 🚀`;
+            const msg = `Fiz a simulação para o:\n\n🏨 *Hotel: ${hotel}*\n🔹 *Detalhes:* 7 dias para ${el('ads').value} Adultos.\n📉 *Desconto Aplicado:* -${el('cardPerc').innerText}% OFF\n💰 *Valor no Site:* ~${el('cardSite').innerText}~\n✅ *Com meu benefício:* *${el('cardFinal').innerText}*\n\nVocê economiza exatos *${el('cardEcon').innerText}* nessa reserva! 🚀`;
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         document.querySelectorAll('input, select').forEach(i => i.addEventListener('input', calcular));
-        window.onload = () => { atualizarCheckout(); toggleAI(); };
+        window.onload = sync;
     </script>
 </body>
 </html>
